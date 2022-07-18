@@ -1,4 +1,96 @@
-.fav {
-  background-color: gainsboro;
-  color:red;
+*{
+  font-size: 62.5%;
+}
+
+.bg-wrapper{
+  background: $dark-gradient;
+  min-height: 100vh;
+  height: auto;
+}
+
+.header-title {
+  font-family: $font-main;
+  color: $primary-color;
+  text-align: center;
+  font-weight: 900;
+  font-size: 4rem;
+  padding: 8rem 2rem 2rem 2rem;
+}
+
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2rem;
+  gap: 1.25rem;
+  &-input {
+    height: 4rem;
+    width: 88vw;
+    padding-left: 1rem;
+    font-size: 1.8rem;
+    &::placeholder{
+      opacity: 25%;
+    }
+    &:focus {
+     outline: $primary-color solid 0.2rem;
+     border: $secondary-color solid 0.1rem;
+    }
+  }
+  &-button {
+    @include button($secondary-color, $text-color-light );
+    &:active{
+      background: #8d29ff;
+      border-radius: 1rem;
+    } 
+    &:hover{
+      filter: drop-shadow(0 0 .8rem rgba(217, 193, 255, 0.333));
+      border: .15rem solid rgba(217, 193, 255, 0.525);
+      color: #d4bcec;
+      transition-duration: 150ms;
+      transition-timing-function: ease-in-out;
+    }
+  }
+  &-fav-reset-button{
+    @include button(#8f6fb4, $text-color-light);
+  }
+  &-reset-button{
+    @include button(#8f6fb4, $text-color-light);
+  }
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+}
+.card{
+  padding: 1rem;
+  background-color: #8d29ff;
+  border-radius: 1.5rem;
+  margin: 1rem;
+  &:hover {
+    padding: .75rem;
+    filter: drop-shadow(0 0 .8rem rgba(217, 193, 255, 0.333));
+    border: .15rem solid rgba(217, 193, 255, 0.525);
+  }
+  
+  &-image{
+    width: 90%;
+    text-align: center;
+  }
+  
+  &-title{
+    font-size: 2rem;
+    padding: .5rem 0;
+    text-align: left;
+
+  }
+}
+
+.fav{
+  background-color: $primary-color;
+  
+}
+
+.favorite-list {
+  
 }

@@ -3,10 +3,14 @@
 const searchInput = document.querySelector('.js-search-input');
 const searchButton = document.querySelector('.js-search-button');
 const resetButton = document.querySelector('.js-reset-button');
+const resetFavButton = document.querySelector('.js-fav-reset-button');
 const favListHTML = document.querySelector('.js-favorite-list');
 const resultList = document.querySelector('.js-result-list');
 const serverURL = 'https://api.jikan.moe/v4/anime?q=';
 const formSearch = document.querySelector('.search');
+
+const serverInvalidImage = 'https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png';
+const placeholderImage = 'https://via.placeholder.com/225x350/3D3D3D/666666/?text=No+image+:(';
 
 let animeResultList = [];
 const animeFavList = [];
@@ -42,25 +46,9 @@ function getFromServer(userSearch) {
     });
 }
 
-/* function printInFavList(animeTitle, animePhoto, animeID, classFav) {
+function addFavClass(){
 
-
-  favListHTML.innerHTML += `<li class="js-anime-card card ${classFav}" id="${animeID}">
-      <img class="card-image" alt"Imagen de ${animeTitle}" title="Imagen de ${animeTitle}" src="${animePhoto}"/>
-      <h3 class="card-title">${animeTitle}</h3>
-    </li>`;
-  listenCard();
 }
- */
-/* function printInResultList(animeTitle, animePhoto, animeID, classFav) {
-
-
-  resultList.innerHTML += `<li class="js-anime-card card ${classFav}" id="${animeID}">
-      <img class="card-image" alt"Imagen de ${animeTitle}" title="Imagen de ${animeTitle}" src="${animePhoto}"/>
-      <h3 class="card-title">${animeTitle}</h3>
-    </li>`;
-  listenCard();
-} */
 
 function renderCard(list, htmlList) {
   htmlList.innerHTML = '';
@@ -71,14 +59,15 @@ function renderCard(list, htmlList) {
     let classFav = '';
     const animeFavIndex = animeFavList.findIndex((favAnime) => favAnime.mal_id === animeID);
 
+    
     if (animeFavIndex !== -1){
       classFav = 'fav';
     } else {
       classFav = '';
     }
 
-    if(animePhoto === "https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png") {
-      animePhoto = "https://via.placeholder.com/225x350/ff0000/666666/?text=No+image+:(";
+    if(animePhoto === serverInvalidImage) {
+      animePhoto = placeholderImage;
     }
     
     htmlList.innerHTML += `<li class="js-anime-card card ${classFav}" id="${animeID}">
@@ -118,10 +107,24 @@ function handleReset(event) {
 }
 
 
+function handleFavReset(event) {
+  event.preventDefault();
+  
+  const allFav = document.querySelectorAll('.fav');
+  for (const anime of allFav) {
+    anime.classList.remove('fav')
+  }
+  
+  animeFavList.length = 0;
+  favListHTML.innerHTML = '';
+  renderCard(animeFavList, favListHTML);
+}
+
 searchInput.addEventListener('keyup', handleInput);
 resetButton.addEventListener('click', handleReset);
 formSearch.addEventListener('click', (event) => event.preventDefault);
 searchButton.addEventListener('click', handleButton);
+resetFavButton.addEventListener('click', handleFavReset);
 
 
 
