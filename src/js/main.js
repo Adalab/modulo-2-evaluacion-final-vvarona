@@ -135,6 +135,7 @@ renderFavoritesFromLS();
 
 resetButton.addEventListener('click', handleReset);
 formSearch.addEventListener('click', (event) => event.preventDefault);
+searchInput.addEventListener('click', (event) => event.preventDefault);
 searchButton.addEventListener('click', handleButton);
 resetFavButton.addEventListener('click', handleFavReset);
 

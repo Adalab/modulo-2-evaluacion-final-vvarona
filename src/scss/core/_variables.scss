@@ -1,5 +1,6 @@
 // fonts
 $font-main: 'Orbitron', sans-serif;
+$font-second: 'Ubuntu', sans-serif;
 
 $primary-color: #FDCE04;
 $secondary-color: #7800FF;
@@ -15,7 +16,7 @@ $dark-gradient: linear-gradient(#3D3D3D, #000000);
     width: 90vw;
     background: $color;
     border: none;
-    border-radius: .3rem;
+    border-radius: .5rem;
     color: $textColor;
     font-size: 1.6rem;
     font-family: $font-main;
