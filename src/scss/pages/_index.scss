@@ -42,7 +42,7 @@
   &-button {
     @include button($secondary-color, $text-color-light );
     
-    &:active{
+    &:focus-visible{
       background: #8d29ff;
       border-radius: 1rem;
     } 
@@ -56,6 +56,13 @@
   }
   &-fav-reset-button{
     @include button(#6a6a6a, $text-color-light);
+    &:hover{
+      filter: drop-shadow(0 0 .8rem rgba(217, 193, 255, 0.333));
+      border: .15rem solid rgba(217, 217, 217, 0.525);
+      color: #ffffff;
+      transition-duration: 150ms;
+      transition-timing-function: ease-in-out;
+    }
   }
   &-reset-button{
     @include button(#6a6a6a, $text-color-light);
@@ -128,4 +135,11 @@
     opacity: 70%; 
     font-family:Arial, Helvetica, sans-serif;
   }
+}
+
+.message{
+  font-size: 2rem;
+  color: $text-color-light;
+  text-align: center;
+  grid-column-start: span 1, 3;
 }

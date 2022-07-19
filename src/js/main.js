@@ -8,6 +8,9 @@ const favListHTML = document.querySelector('.js-favorite-list');
 const resultList = document.querySelector('.js-result-list');
 const serverURL = 'https://api.jikan.moe/v4/anime?q=';
 const formSearch = document.querySelector('.search');
+const errorMessage = document.querySelector('.js-message');
+
+
 
 const serverInvalidImage = 'https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png';
 const placeholderImage = 'https://via.placeholder.com/225x350/3D3D3D/666666/?text=No+image+:(';
@@ -15,6 +18,9 @@ const placeholderImage = 'https://via.placeholder.com/225x350/3D3D3D/666666/?tex
 let animeResultList = [];
 const animeFavList = [];
 
+function setFavoritesInLS(){
+  localStorage.setItem('favorites', JSON.stringify(animeFavList));
+}
 
 function handleFavList(event) {
   const selectedAnimeID = parseInt(event.currentTarget.id);
@@ -30,7 +36,7 @@ function handleCardClick(event) {
   handleFavList(event);
   renderCard(animeResultList, resultList);
   renderCard(animeFavList, favListHTML);
- 
+  setFavoritesInLS();
 }
 
 function listenCard() {
@@ -40,24 +46,35 @@ function listenCard() {
   }
 } 
 
+
 function getFromServer(userSearch) {
   return fetch(serverURL + userSearch)
     .then((response) => response.json())
-    .then((apiData) => {animeResultList = apiData.data})
+    .then((apiData) => {
+      animeResultList = apiData.data;})
     .catch(error => {
       console.error(error);
     });
 }
 
+function renderFavoritesFromLS() {
+  const favoritesFromLS = JSON.parse(localStorage.getItem('favorites'));
+  if (favoritesFromLS){
+    for (const anime of favoritesFromLS) {
+      animeFavList.push(anime);
+    }
+    renderCard(animeFavList, favListHTML);
+  }
+}
+
 function renderCard(list, htmlList) {
-  emptyList(htmlList);
+  emptyElement(htmlList);
   for (const anime of list) {
     let animeTitle = anime.title;
     let animePhoto = anime.images.jpg.image_url;
     let animeID = anime.mal_id;
     let classFav = '';
     const animeFavIndex = animeFavList.findIndex((favAnime) => favAnime.mal_id === animeID);
-
 
     if (animeFavIndex !== -1){
       classFav = 'fav';
@@ -79,37 +96,42 @@ function renderCard(list, htmlList) {
   }
 }
 
-
 function handleButton(event) {
   event.preventDefault();
   const userSearch = searchInput.value;
   let searchInServer = serverURL + userSearch;
-  getFromServer(searchInServer)
-    .then(()=>{renderCard(animeResultList, resultList);
-    });
+  if(searchInput.value === ''){
+    errorMessage.innerHTML = 'Introduce una serie para poder buscar';
+  } else {
+    getFromServer(searchInServer)
+      .then(()=>{renderCard(animeResultList, resultList);
+      });}
 }
 
 function handleReset(event) {
   event.preventDefault();
   searchInput.value = '';
-  emptyList(resultList);
+  emptyElement(resultList);
+  emptyElement(errorMessage);
 }
 
-function emptyList(list){
-  list.innerHTML = '';
+function emptyElement(element){
+  element.innerHTML = '';
 }
 
 function handleFavReset(event) {
   event.preventDefault();
-  
   const allInFavList = document.querySelectorAll('.fav');
   for (const anime of allInFavList) {
     anime.classList.remove('fav');
   }
   animeFavList.length = 0;
-  emptyList(favListHTML);
+  emptyElement(favListHTML);
+  setFavoritesInLS();
   renderCard(animeFavList, favListHTML);
 }
+
+renderFavoritesFromLS();
 
 resetButton.addEventListener('click', handleReset);
 formSearch.addEventListener('click', (event) => event.preventDefault);
