@@ -9,7 +9,7 @@ const resultList = document.querySelector('.js-result-list');
 const serverURL = 'https://api.jikan.moe/v4/anime?q=';
 const formSearch = document.querySelector('.search');
 const errorMessage = document.querySelector('.js-message');
-
+const logButton = document.querySelector('.js-log-button');
 
 
 const serverInvalidImage = 'https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png';
@@ -73,6 +73,7 @@ function renderCard(list, htmlList) {
     let animeTitle = anime.title;
     let animePhoto = anime.images.jpg.image_url;
     let animeID = anime.mal_id;
+    let animeEpisodes = anime.episodes;
     let classFav = '';
     const animeFavIndex = animeFavList.findIndex((favAnime) => favAnime.mal_id === animeID);
 
@@ -88,6 +89,7 @@ function renderCard(list, htmlList) {
 
     htmlList.innerHTML += `<li class="js-anime-card card ${classFav}" id="${animeID}">
       <img class="card-image" alt"Imagen de ${animeTitle}" title="Imagen de ${animeTitle}" src="${animePhoto}"/>
+      <p>Número de espisodios: ${animeEpisodes}</p>
       <h3 class="card-title">${animeTitle}</h3>
     </li>`;
 
@@ -131,6 +133,13 @@ function handleFavReset(event) {
   renderCard(animeFavList, favListHTML);
 }
 
+function handleLogButton(event) {
+  event.preventDefault();
+  for (const anime of animeResultList) {
+    console.log(anime.title);
+  }
+}
+
 renderFavoritesFromLS();
 
 resetButton.addEventListener('click', handleReset);
@@ -138,6 +147,6 @@ formSearch.addEventListener('click', (event) => event.preventDefault);
 searchInput.addEventListener('click', (event) => event.preventDefault);
 searchButton.addEventListener('click', handleButton);
 resetFavButton.addEventListener('click', handleFavReset);
-
+logButton.addEventListener('click', handleLogButton);
 
 
